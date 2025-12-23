@@ -1,0 +1,247 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import KNNImputer
+from sklearn.linear_model import LassoCV, LogisticRegression
+from sklearn.metrics import roc_curve, confusion_matrix
+import os
+
+# ==========================================
+# 1. 页面配置
+# ==========================================
+st.set_page_config(
+    page_title="NSLN 风险分层决策系统",
+    page_icon="⚕️",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
+
+st.markdown("""
+<style>
+    .report-container { background-color: #ffffff; padding: 40px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.05); border-top: 10px solid #0e3b68; font-family: 'Arial', sans-serif; }
+    .header-title { color: #0e3b68; font-size: 26px; font-weight: bold; text-align: center; margin-bottom: 5px; }
+    .header-subtitle { color: #666; font-size: 14px; text-align: center; margin-bottom: 30px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+    .section-title { color: #0e3b68; font-size: 18px; font-weight: bold; margin-top: 25px; margin-bottom: 15px; border-left: 4px solid #0e3b68; padding-left: 10px; }
+    .result-box { text-align: center; padding: 20px; margin: 20px 0; background: #f8f9fa; border-radius: 10px; }
+    .probability-score { font-size: 48px; font-weight: bold; color: #333; }
+    
+    /* 三色卡片样式 */
+    .rec-card { padding: 20px; border-radius: 8px; border-left: 6px solid; margin-top: 15px; }
+    
+    /* 🟢 低风险 */
+    .rec-low { background-color: #f0fdf4; border-color: #16a34a; color: #166534; }
+    /* 🟡 中风险 */
+    .rec-mid { background-color: #fffbeb; border-color: #f59e0b; color: #92400e; }
+    /* 🔴 高风险 */
+    .rec-high { background-color: #fef2f2; border-color: #dc2626; color: #991b1b; }
+    
+    .input-label { font-size: 13px; color: #555; font-weight: 600; margin-bottom: 2px; }
+    .stats-box { font-size: 0.9rem; background: #e3f2fd; padding: 15px; border-radius: 8px; color: #0d47a1; margin-top: 20px;}
+</style>
+""", unsafe_allow_html=True)
+
+# ==========================================
+# 2. 核心算法引擎
+# ==========================================
+@st.cache_resource
+def train_model():
+    files = ['breast cancer.xlsx', 'breast cancer.xlsx - Sheet1.csv']
+    df = None
+    for f in files:
+        if os.path.exists(f):
+            try:
+                if f.endswith('.xlsx'): df = pd.read_excel(f)
+                else: df = pd.read_csv(f)
+                break
+            except: continue
+    
+    if df is None: return None, None, None, None, None, None, None, None, None
+
+    # --- 数据清洗 ---
+    df.columns = df.columns.str.strip()
+    rename_map = {
+        'NSLN status(1=positive,0=negative)': 'NSLN_Status', 
+        'NSLN status(1=positive，0=negative)': 'NSLN_Status',
+        'Age': 'Age', 'Tumor location': 'Tumor_Location', 'Tumor size': 'Tumor_Size',
+        'Grade': 'Grade', 'TILS ': 'TILS', 'TILS': 'TILS',
+        'LVI（1=Yes，0=No）': 'LVI', 'Number of positive SLN': 'SLN_Count',
+        'ER(1=positive，0=negative)': 'ER', 'PR': 'PR', 'Her-2(1=positive，0=negative)': 'Her2',
+        'KI-67': 'Ki67', 'P53': 'P53', 'AR': 'AR', 'Molecular_Subtype': 'Molecular_Subtype',
+        '编号 ': 'ID', '编号': 'ID'
+    }
+    df = df.rename(columns=rename_map)
+
+    def clean_pct(x):
+        if isinstance(x, str) and '%' in x:
+            try: return float(x.replace('%', ''))/100
+            except: return np.nan
+        return pd.to_numeric(x, errors='coerce')
+    for c in ['TILS', 'Ki67', 'P53', 'AR']:
+        if c in df.columns: df[c] = df[c].apply(clean_pct)
+    num_cols = ['Age', 'Tumor_Size', 'Grade', 'LVI', 'SLN_Count', 'NSLN_Status']
+    for c in num_cols:
+        if c in df.columns: df[c] = pd.to_numeric(df[c], errors='coerce')
+
+    if 'NSLN_Status' not in df.columns: return None, None, None, None, None, None, None, None, None
+    df = df.dropna(subset=['NSLN_Status'])
+
+    # AR Cutoff
+    best_cutoff = 0.3
+    if 'AR' in df.columns:
+        df_ar = df.dropna(subset=['AR'])
+        if len(df_ar) > 10:
+            fpr, tpr, thresholds = roc_curve(df_ar['NSLN_Status'], df_ar['AR'])
+            best_cutoff = thresholds[np.argmax(tpr - fpr)]
+            df['AR_Cat'] = (df['AR'] >= best_cutoff).astype(int)
+        else: df['AR_Cat'] = (df['AR'] >= 0.3).astype(int)
+    else: df['AR_Cat'] = 0
+
+    exclude = ['编号', '住院号', '姓名', 'NSLN_Status', 'SLN（0=Micro metastasis,1=Macro metastasis）', 'AR', 'ID']
+    valid_cols = []
+    for c in df.columns:
+        if c not in exclude:
+            if df[c].dtype in [np.float64, np.int64] or df[c].nunique() < 10:
+                valid_cols.append(c)
+    
+    X = df[valid_cols]
+    y = df['NSLN_Status'].astype(int)
+    
+    cat_cols = [c for c in ['Tumor_Location', 'Molecular_Subtype'] if c in X.columns]
+    X_enc = pd.get_dummies(X, columns=cat_cols, drop_first=True)
+    final_features = X_enc.columns.tolist()
+
+    # 划分数据集
+    X_train, X_val, y_train, y_val = train_test_split(X_enc, y, test_size=0.3, random_state=42, stratify=y)
+
+    imputer = KNNImputer(n_neighbors=5)
+    scaler = StandardScaler()
+    X_train_imp = imputer.fit_transform(X_train)
+    X_val_imp = imputer.transform(X_val)
+    X_train_sc = scaler.fit_transform(X_train_imp)
+    X_val_sc = scaler.transform(X_val_imp)
+
+    try:
+        lasso = LassoCV(cv=5, random_state=42).fit(X_train_sc, y_train)
+        coefs = pd.Series(lasso.coef_, index=final_features)
+        selected_feats = coefs[coefs != 0].index.tolist()
+        if not selected_feats: selected_feats = final_features
+    except: selected_feats = final_features
+
+    X_train_final = pd.DataFrame(X_train_sc, columns=final_features)[selected_feats]
+    X_val_final = pd.DataFrame(X_val_sc, columns=final_features)[selected_feats]
+    
+    lr_model = LogisticRegression(max_iter=1000).fit(X_train_final, y_train)
+    y_prob_val = lr_model.predict_proba(X_val_final)[:, 1]
+    
+    return lr_model, selected_feats, imputer, scaler, best_cutoff, final_features, y_val, y_prob_val, final_features
+
+try:
+    model, sel_feats, imputer, scaler, ar_cutoff, all_encoded_cols, y_val_true, y_val_prob, all_feats = train_model()
+except: st.error("数据加载失败"); st.stop()
+
+if model is None: st.warning("⚠️ 请上传数据文件"); st.stop()
+
+# ==========================================
+# 3. 界面布局
+# ==========================================
+st.markdown('<div class="report-container">', unsafe_allow_html=True)
+st.markdown(f'<div class="header-title">乳腺癌 NSLN 转移风险分层评估</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="header-subtitle">Risk Stratification: Low(<10%) | Intermediate(10-30%) | High(>30%)</div>', unsafe_allow_html=True)
+
+# --- 参数录入区 ---
+st.markdown('<div class="section-title">1. 患者临床参数录入</div>', unsafe_allow_html=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.markdown('<p class="input-label">肿瘤大小 (Tumor Size, cm)</p>', unsafe_allow_html=True)
+    tumor_size = st.number_input("size", 0.1, 10.0, 2.0, 0.1, label_visibility="collapsed")
+    st.markdown('<p class="input-label">前哨淋巴结阳性数</p>', unsafe_allow_html=True)
+    sln_count = st.number_input("sln", 1, 30, 1, label_visibility="collapsed")
+    st.markdown('<p class="input-label">组织学分级 (Grade)</p>', unsafe_allow_html=True)
+    grade = st.selectbox("grade", (1, 2, 3), index=1, label_visibility="collapsed")
+    st.markdown('<p class="input-label">脉管瘤栓 (LVI)</p>', unsafe_allow_html=True)
+    lvi_opt = st.radio("lvi", ("无", "有"), horizontal=True, label_visibility="collapsed")
+    lvi_val = 1 if lvi_opt == "有" else 0
+
+with col2:
+    st.markdown('<p class="input-label">肿瘤位置</p>', unsafe_allow_html=True)
+    tumor_loc = st.selectbox("loc", ('Upper outer quadrant', 'Upper inner quadrant', 'Outer lower quadrant', 'Inner lower quadrant', 'Central area'), label_visibility="collapsed")
+    st.markdown('<p class="input-label">分子分型</p>', unsafe_allow_html=True)
+    subtype = st.selectbox("subtype", ('Luminal A', 'Luminal B', 'HER2 Positive', 'TNBC'), label_visibility="collapsed")
+    st.markdown('<p class="input-label">P53 表达率 (%)</p>', unsafe_allow_html=True)
+    p53 = st.slider("p53", 0, 100, 10, label_visibility="collapsed")
+    st.markdown('<p class="input-label">AR 表达率 (%)</p>', unsafe_allow_html=True)
+    ar_val = st.slider("ar", 0, 100, 50, label_visibility="collapsed")
+
+her2_val = 1 if subtype == 'HER2 Positive' else 0 
+ar_cat = 1 if (ar_val/100.0) >= ar_cutoff else 0
+
+# --- 预测与决策 ---
+input_data = {
+    'Tumor_Size': tumor_size, 'SLN_Count': sln_count, 'P53': p53/100, 'Grade': grade,
+    'LVI': lvi_val, 'Her2': her2_val, 'AR_Cat': ar_cat, 
+    'Tumor_Location': tumor_loc, 'Molecular_Subtype': subtype,
+    'Age': 50, 'TILS': 0.1, 'ER': 1, 'PR': 1, 'Ki67': 0.2, 'AR': ar_val/100
+}
+df_in = pd.DataFrame([input_data])
+df_enc = pd.get_dummies(df_in, columns=['Tumor_Location', 'Molecular_Subtype'], drop_first=True)
+for c in all_encoded_cols:
+    if c not in df_enc.columns: df_enc[c] = 0
+df_enc = df_enc[all_encoded_cols]
+X_in_sc = scaler.transform(df_enc)
+X_in_final = pd.DataFrame(X_in_sc, columns=all_encoded_cols)[sel_feats]
+prob = model.predict_proba(X_in_final)[0][1]
+
+st.markdown("---")
+st.markdown('<div class="section-title">2. 评估结果与临床建议</div>', unsafe_allow_html=True)
+
+st.markdown(f"""
+<div class="result-box">
+    <div style="font-size:14px; color:#888;">PREDICTED PROBABILITY</div>
+    <div class="probability-score">{prob:.1%}</div>
+</div>
+""", unsafe_allow_html=True)
+
+# === 🌟 核心：三级风险划分逻辑 ===
+if prob < 0.10:
+    # 低风险 (<10%)
+    st.markdown(f"""
+    <div class="rec-card rec-low">
+        <h3 style="margin:0;">🛡️ 低风险 (Low Risk)</h3>
+        <p style="margin:5px 0; color:#15803d;"><strong>预测概率 < 10%</strong></p>
+        <hr style="border-color:#86efac; opacity:0.5;">
+        <p style="font-weight:bold;">✅ 建议：豁免腋窝淋巴结清扫 (Omit ALND)</p>
+        <p style="font-size:0.9em; margin-top:5px;">依据：残余风险极低，与手术误差相当 (Hwang et al.)。</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+elif 0.10 <= prob <= 0.30:
+    # 中等风险 (10-30%) - 灰色地带
+    st.markdown(f"""
+    <div class="rec-card rec-mid">
+        <h3 style="margin:0;">⚖️ 中等风险 (Intermediate Risk)</h3>
+        <p style="margin:5px 0; color:#92400e;"><strong>预测概率 10% - 30%</strong></p>
+        <hr style="border-color:#fcd34d; opacity:0.5;">
+        <p style="font-weight:bold;">⚠️ 建议：个体化决策 (Individualized Decision)</p>
+        <ul style="margin-top:5px; font-size:0.95em;">
+            <li><strong>若符合 Z0011 标准 (保乳+放疗)：</strong> 可考虑豁免清扫。</li>
+            <li><strong>若行全乳切除 (无放疗)：</strong> 建议行腋窝清扫。</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+
+else:
+    # 高风险 (>30%)
+    st.markdown(f"""
+    <div class="rec-card rec-high">
+        <h3 style="margin:0;">🛑 高风险 (High Risk)</h3>
+        <p style="margin:5px 0; color:#b91c1c;"><strong>预测概率 > 30%</strong></p>
+        <hr style="border-color:#fca5a5; opacity:0.5;">
+        <p style="font-weight:bold;">🚫 建议：行腋窝淋巴结清扫术 (ALND)</p>
+        <p style="font-size:0.9em; margin-top:5px;">依据：高肿瘤负荷，放疗可能不足以控制。</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
