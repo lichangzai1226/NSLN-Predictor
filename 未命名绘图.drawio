@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="第 1 页" id="idae-35skBgX1Cd1s0vj">
-    <mxGraphModel dx="1785" dy="378" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2375" dy="1072" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -125,6 +125,233 @@
             <mxPoint x="240" y="780" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <UserObject label="" mermaidData="{&#xa;  &quot;data&quot;: &quot;mermaid\nflowchart TB\n    S[\&quot;研究队列：205例&lt;br/&gt;NSLN阳性49例（23.9%）&lt;br/&gt;NSLN阴性156例（76.1%）\&quot;]\n\n    S --&gt; A[\&quot;方案一：单次7:3随机分层\&quot;]\n    S --&gt; B[\&quot;方案二：分层5折交叉验证\&quot;]\n\n    A --&gt; A1[\&quot;训练集约144例&lt;br/&gt;阳性约34例｜阴性约110例\&quot;]\n    A --&gt; A2[\&quot;测试集约61例&lt;br/&gt;阳性约15例｜阴性约46例\&quot;]\n    A1 --&gt; A3[\&quot;仅进行一次随机划分\&quot;]\n    A2 --&gt; A3\n    A3 --&gt; A4[\&quot;主要局限&lt;br/&gt;测试集仅约15个阳性事件&lt;br/&gt;评价结果容易受随机种子影响&lt;br/&gt;AUC、校准及DCA不稳定\&quot;]\n\n    B --&gt; B1[\&quot;按结局比例分成5组&lt;br/&gt;每组约41例&lt;br/&gt;阳性约9～10例\&quot;]\n    B1 --&gt; B2[\&quot;每轮：4组构成外层训练集&lt;br/&gt;约164例，阳性约39～40例\&quot;]\n    B1 --&gt; B3[\&quot;每轮：1组作为外层测试集&lt;br/&gt;约41例，阳性约9～10例\&quot;]\n    B2 --&gt; B4[\&quot;轮换5次\&quot;]\n    B3 --&gt; B4\n    B4 --&gt; B5[\&quot;每位患者获得一次&lt;br/&gt;未参与模型训练的测试预测\&quot;]\n    B5 --&gt; B6[\&quot;汇总205例OOF预测&lt;br/&gt;评价时包含全部49个阳性事件\&quot;]\n\n    A4 --&gt; C[\&quot;结论\&quot;]\n    B6 --&gt; C\n    C --&gt; D[\&quot;205例、49个阳性事件：&lt;br/&gt;分层5折比单次7:3更充分利用有限样本&lt;br/&gt;并降低一次随机划分带来的不稳定性\&quot;]\n\n    classDef cohort fill:#EAF3F8,stroke:#17466A,color:#102A3B,stroke-width:2px;\n    classDef split fill:#FDEEEE,stroke:#B84A4A,color:#562020,stroke-width:1.5px;\n    classDef fold fill:#EAF7EF,stroke:#31845C,color:#173F2B,stroke-width:1.5px;\n    classDef conclusion fill:#17466A,stroke:#17466A,color:#FFFFFF,stroke-width:2px;\n\n    class S cohort;\n    class A,A1,A2,A3,A4 split;\n    class B,B1,B2,B3,B4,B5,B6 fold;\n    class C,D conclusion;&quot;,&#xa;  &quot;config&quot;: null&#xa;}" id="Tq8BJLhfO_roktYwcT6i-1">
+          <mxCell connectable="0" parent="1" style="group;transparentBounds=1;editIcon=1;lockedGroup=0;groupPadding=20;" vertex="1">
+            <mxGeometry as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="研究队列：205例&#xa;NSLN阳性49例（23.9%）&#xa;NSLN阴性156例（76.1%）" mermaidId="n:S" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#EAF3F8;strokeColor=#17466A;fontColor=#102A3B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="研究队列：205例&#xa;NSLN阳性49例（23.9%）&#xa;NSLN阴性156例（76.1%）" id="Tq8BJLhfO_roktYwcT6i-2">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#EAF3F8;strokeColor=#17466A;fontColor=#102A3B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="92" width="242" x="483" y="900" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="方案一：单次7:3随机分层" mermaidId="n:A" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="方案一：单次7:3随机分层" id="Tq8BJLhfO_roktYwcT6i-3">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="54" width="243" x="188" y="1298" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="方案二：分层5折交叉验证" mermaidId="n:B" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="方案二：分层5折交叉验证" id="Tq8BJLhfO_roktYwcT6i-4">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="54" width="244" x="742" y="1042" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="训练集约144例&#xa;阳性约34例｜阴性约110例" mermaidId="n:A1" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="训练集约144例&#xa;阳性约34例｜阴性约110例" id="Tq8BJLhfO_roktYwcT6i-5">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="246" x="40" y="1411" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="测试集约61例&#xa;阳性约15例｜阴性约46例" mermaidId="n:A2" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="测试集约61例&#xa;阳性约15例｜阴性约46例" id="Tq8BJLhfO_roktYwcT6i-6">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="238" x="336" y="1411" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="仅进行一次随机划分" mermaidId="n:A3" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="仅进行一次随机划分" id="Tq8BJLhfO_roktYwcT6i-7">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="54" width="204" x="207" y="1544" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="主要局限&#xa;测试集仅约15个阳性事件&#xa;评价结果容易受随机种子影响&#xa;AUC、校准及DCA不稳定" mermaidId="n:A4" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="主要局限&#xa;测试集仅约15个阳性事件&#xa;评价结果容易受随机种子影响&#xa;AUC、校准及DCA不稳定" id="Tq8BJLhfO_roktYwcT6i-8">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#FDEEEE;strokeColor=#B84A4A;fontColor=#562020;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="111" width="268" x="175" y="1657" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="按结局比例分成5组&#xa;每组约41例&#xa;阳性约9～10例" mermaidId="n:B1" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="按结局比例分成5组&#xa;每组约41例&#xa;阳性约9～10例" id="Tq8BJLhfO_roktYwcT6i-9">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="92" width="196" x="766" y="1146" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="每轮：4组构成外层训练集&#xa;约164例，阳性约39～40例" mermaidId="n:B2" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="每轮：4组构成外层训练集&#xa;约164例，阳性约39～40例" id="Tq8BJLhfO_roktYwcT6i-10">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="247" x="593" y="1288" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="每轮：1组作为外层测试集&#xa;约41例，阳性约9～10例" mermaidId="n:B3" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="每轮：1组作为外层测试集&#xa;约41例，阳性约9～10例" id="Tq8BJLhfO_roktYwcT6i-11">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="244" x="890" y="1288" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="轮换5次" mermaidId="n:B4" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="轮换5次" id="Tq8BJLhfO_roktYwcT6i-12">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="54" width="116" x="806" y="1421" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="每位患者获得一次&#xa;未参与模型训练的测试预测" mermaidId="n:B5" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="每位患者获得一次&#xa;未参与模型训练的测试预测" id="Tq8BJLhfO_roktYwcT6i-13">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="252" x="738" y="1534" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="汇总205例OOF预测&#xa;评价时包含全部49个阳性事件" mermaidId="n:B6" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="汇总205例OOF预测&#xa;评价时包含全部49个阳性事件" id="Tq8BJLhfO_roktYwcT6i-14">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=1.5;fillColor=#EAF7EF;strokeColor=#31845C;fontColor=#173F2B;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="269" x="729" y="1676" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="结论" mermaidId="n:C" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#17466A;strokeColor=#17466A;fontColor=#FFFFFF;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="结论" id="Tq8BJLhfO_roktYwcT6i-15">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#17466A;strokeColor=#17466A;fontColor=#FFFFFF;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="54" width="92" x="558" y="1818" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="205例、49个阳性事件：&#xa;分层5折比单次7:3更充分利用有限样本&#xa;并降低一次随机划分带来的不稳定性" mermaidId="n:D" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#17466A;strokeColor=#17466A;fontColor=#FFFFFF;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="205例、49个阳性事件：&#xa;分层5折比单次7:3更充分利用有限样本&#xa;并降低一次随机划分带来的不稳定性" id="Tq8BJLhfO_roktYwcT6i-16">
+          <mxCell parent="Tq8BJLhfO_roktYwcT6i-1" style="html=1;whiteSpace=wrap;strokeWidth=2;fillColor=#17466A;strokeColor=#17466A;fontColor=#FFFFFF;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="92" width="331" x="439" y="1922" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:S-&gt;A#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0;exitY=0.82;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-17">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-2" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0;exitY=0.82;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-3">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="309" y="1017" />
+                <mxPoint x="309" y="1069" />
+                <mxPoint x="309" y="1121" />
+                <mxPoint x="309" y="1192" />
+                <mxPoint x="309" y="1263" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:S-&gt;B#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.86;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-18">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-2" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.86;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-4">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="864" y="1017" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:A-&gt;A1#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.23;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-19">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-3" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.23;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-5">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="163" y="1386" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:A-&gt;A2#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.76;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-20">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-3" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.76;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-6">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="455" y="1386" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:A1-&gt;A3#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.19;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-21">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-5" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.19;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-7">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="163" y="1509" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:A2-&gt;A3#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.81;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-22">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-6" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.81;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-7">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="455" y="1509" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:A3-&gt;A4#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-23">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-7" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-8">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:B-&gt;B1#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-24">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-4" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-9">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:B1-&gt;B2#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.01;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-25">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-9" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.01;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-10">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="716" y="1263" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:B1-&gt;B3#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.98;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-26">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-9" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.98;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-11">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1012" y="1263" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:B2-&gt;B4#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0;entryY=0.04;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-27">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-10" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0;entryY=0.04;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-12">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="716" y="1386" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:B3-&gt;B4#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.04;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-28">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-11" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.04;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-12">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="1012" y="1386" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:B4-&gt;B5#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-29">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-12" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-13">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:B5-&gt;B6#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-30">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-13" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-14">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:A4-&gt;C#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0;entryY=0.35;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-31">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-8" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0;entryY=0.35;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-15">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="309" y="1793" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:B6-&gt;C#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.33;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-32">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-14" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.33;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-15">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="864" y="1793" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:C-&gt;D#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="" id="Tq8BJLhfO_roktYwcT6i-33">
+          <mxCell edge="1" parent="Tq8BJLhfO_roktYwcT6i-1" source="Tq8BJLhfO_roktYwcT6i-15" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="Tq8BJLhfO_roktYwcT6i-16">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
       </root>
     </mxGraphModel>
   </diagram>
